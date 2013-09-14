@@ -20,8 +20,9 @@ client := angellist.NewGuest()
 user, err := client.Users.Get(206401)
 ```
 
-Some API calls require authentication. You can construct an authenticated
-AngelList client by providng your OAuth2 token:
+The above example is executing the API calls as an anonymous user. Hoewver,
+some API calls require authentication. When creating a client you can provide
+your OAuth2 token:
 
 ```go
 client := angellist.New("62b1f3bc5dec16c8")

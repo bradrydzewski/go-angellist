@@ -4,6 +4,8 @@ import (
 	"crypto/md5"
 	"fmt"
 	"io"
+	"strconv"
+	"strings"
 )
 
 type User struct {
@@ -102,8 +104,20 @@ func (u *UserResource) Get(id int) (*User, error) {
 
 // Get a user's information given an id.
 func (u *UserResource) GetMulti(ids ...int) ([]*User, error) {
+	// convert the int array to a string array
+	idstr := []string{}
+	for _, id := range ids {
+		idstr = append(idstr, strconv.Itoa(id))
+	}
 
-	return nil, nil
+	// convert the string array to a comma-separated string
+	// and create the URL
+	path := fmt.Sprintf("/1/users/batch?include_details=investor&ids=%s", strings.Join(idstr, ","))
+	users := []*User{}
+	if err := u.client.do("GET", path, nil, &users); err != nil {
+		return nil, err
+	}
+	return users, nil
 }
 
 // Search for a user given a URL slug.

@@ -1,3 +1,7 @@
+// Copyright 2013 The go-angellist AUTHORS. All rights reserved.
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
 package angellist
 
 import (
@@ -78,11 +82,13 @@ type Investment struct {
 }
 
 type InvestorDetail struct {
-	Accreditation string `json:"accreditation"`
+	Accreditation   string `json:"accreditation"`
+    StartupsPerYear string `json:"startups_per_year"`
+    AverageAmount   string `json:"average_amount"`
 
 	// Child collections
 	Locations   []*Location   `json:"locations"`
-	Investments []*Investment `json:"investment"`
+	Investments []*Investment `json:"investments"`
 	Markets     []*Market     `json:"markets"`
 }
 
@@ -112,7 +118,7 @@ func (u *UserResource) GetMulti(ids ...int) ([]*User, error) {
 
 	// convert the string array to a comma-separated string
 	// and create the URL
-	path := fmt.Sprintf("/1/users/batch?include_details=investor&ids=%s", strings.Join(idstr, ","))
+	path := fmt.Sprintf("/1/users/batch?ids=%s&include_details=investor", strings.Join(idstr, ","))
 	users := []*User{}
 	if err := u.client.do("GET", path, nil, &users); err != nil {
 		return nil, err
